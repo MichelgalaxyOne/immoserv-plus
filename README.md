@@ -1,59 +1,181 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ImmoServ+
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**A web platform connecting clients and real estate service providers in Benin.**
+Geolocated listings, real-time messaging, reviews and an admin panel, built with Laravel 12.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-12-red)
+![PHP](https://img.shields.io/badge/PHP-8.2-blue)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-orange)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## About the project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Benin's real estate market is still largely informal. Finding a home to rent or buy relies on word of mouth, handwritten signs and unreliable intermediaries. The result is wasted time, little price transparency and unequal access to information for everyone involved.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+ImmoServ+ centralizes property offers in one place. Clients can search, locate properties on a map and contact providers directly. Providers (agencies and owners) can publish and manage their listings. The platform focuses on **rentals and sales** and is adapted to the local context: French interface, prices in FCFA, and a mobile-first design.
 
-## Learning Laravel
+The project was developed as a final-year thesis for a Bachelor's degree in Computer Systems and Software at ESTAG, Cotonou. Its needs analysis is based on field observation during an internship at a real estate agency and on interviews with clients, providers and informal intermediaries.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Clients
+- Register and log in
+- Search listings by keyword, location and price range
+- View listings on an interactive map
+- Browse listing details: photo gallery, full description, provider information
+- Send a contact request and track its status (pending, accepted, refused)
+- Chat in real time with a provider once a request is accepted
+- Leave a rating and a comment after an accepted request
+- Manage a personal profile
 
-## Laravel Sponsors
+### Providers
+- Publish rental or sale listings with title, description, price, location, GPS coordinates and multiple photos
+- Edit, deactivate or delete listings
+- Accept or refuse client requests
+- Real-time messaging with clients
+- Receive notifications for each new request
+- Export listings as PDF
+- Manage a personal profile
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Administrators
+- Dashboard with global statistics
+- User management
+- Listing moderation (activate, deactivate, delete)
+- Category management
 
-### Premium Partners
+## Tech stack
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| Layer | Technologies |
+|---|---|
+| Presentation | Laravel Blade, Bootstrap 5, Leaflet.js (OpenStreetMap), Pusher.js |
+| Business logic | Laravel 12 (PHP 8.2), role-based authentication, Laravel Reverb (WebSockets), queue worker, Vite, DomPDF |
+| Data | MySQL 8.x, Eloquent ORM |
+| Local environment | XAMPP (Apache, MySQL, phpMyAdmin) |
 
-## Contributing
+The application follows an **MVC, 3-tier architecture**: browser, Laravel backend, MySQL database.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Database
 
-## Code of Conduct
+Main tables: `users`, `categories`, `services` (the property listings), `service_images`, `demandes`, `messages`, `avis`, `notifications`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Some business rules:
+- A review can only be submitted if an accepted request exists between that client and that listing. Ratings range from 1 to 5.
+- Listings use soft deletion, so the history of requests and reviews is preserved.
+- Administrators can permanently delete data. Deleting a user also removes their listings, requests, messages, reviews and notifications (`ON DELETE CASCADE`).
 
-## Security Vulnerabilities
+## Security
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Passwords hashed with Bcrypt
+- SQL injection protection through Eloquent and prepared statements
+- CSRF protection on forms
+- Role-based access control (client, provider, administrator)
 
-## License
+## Screenshots
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![Home page](docs/screenshots/home.jpg)
+
+
+
+
+![Listing with map](docs/screenshots/map.jpg)
+
+
+
+
+![Messaging](docs/screenshots/Chat.jpg)
+
+
+
+
+![Admin dashboard](docs/screenshots/admin.png)
+
+## Installation
+
+### Requirements
+- PHP 8.2 or higher
+- Composer
+- Node.js and npm
+- MySQL 8.x (for example through XAMPP)
+
+### Steps
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/MichelgalaxyOne/immoserv-plus.git
+cd immoserv-plus
+
+# 2. Install dependencies
+composer install
+npm install
+
+# 3. Configure the environment
+cp .env.example .env
+php artisan key:generate
+```
+
+Open `.env` and set your MySQL database credentials (the default is SQLite, so change `DB_CONNECTION` and uncomment the other lines) and the Reverb (WebSocket) variables:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=root
+DB_PASSWORD=
+
+BROADCAST_CONNECTION=reverb
+
+REVERB_APP_ID=local-app-id
+REVERB_APP_KEY=local-app-key
+REVERB_APP_SECRET=local-app-secret
+REVERB_HOST=localhost
+REVERB_PORT=8080
+REVERB_SCHEME=http
+
+VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
+VITE_REVERB_HOST="${REVERB_HOST}"
+VITE_REVERB_PORT="${REVERB_PORT}"
+VITE_REVERB_SCHEME="${REVERB_SCHEME}"
+```
+
+For local use, the Reverb ID, key and secret can be any values you choose.
+
+Create an empty database with that name in phpMyAdmin, then continue:
+
+```bash
+# 4. Create the tables, load the demo data and create the storage link
+php artisan migrate --seed
+php artisan storage:link
+
+# 5. Start the application (each command in its own terminal)
+php artisan serve
+php artisan reverb:start
+php artisan queue:work
+npm run dev
+```
+
+The application is then available at `http://127.0.0.1:8000`.
+
+### Demo accounts
+
+The seeder creates demo data (categories, sample listings and requests) and these test accounts:
+
+| Role | Email | Password |
+|---|---|---|
+| Administrator | admin@immo.com | admin123 |
+| Provider | jean@immo.com | password |
+| Provider | marie@immo.com | password |
+| Client | paul@immo.com | password |
+| Client | ines@immo.com | password |
+
+> These accounts are for local testing only. Change or remove them before any real deployment.
+
+## Project status
+
+Functional tests have been carried out on the main features. Possible improvements include online payment, push notifications, advanced search filters and deployment on a production server.
+
+## Author
+
+**Marie-Michel HOUNKPE**
+Bachelor's degree in Computer Systems and Software, ESTAG, Cotonou (Benin)
+GitHub: [@MichelgalaxyOne](https://github.com/MichelgalaxyOne)
