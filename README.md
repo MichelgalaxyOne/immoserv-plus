@@ -87,7 +87,7 @@ Some business rules:
 
 
 
-![Admin dashboard](docs/screenshots/admin.png)
+![Admin dashboard](docs/screenshots/admin.jpg)
 
 ## Installation
 
